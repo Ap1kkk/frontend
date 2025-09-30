@@ -3,22 +3,45 @@ import './App.css';
 import {useState} from "react";
 
 function App() {
-  const [input, setInput] = useState('');
+  const [input1, setInput1] = useState('');
+  const [input2, setInput2] = useState('');
+  const [responseMessage, setResponseMessage] = useState('');
 
-  const handeSubmit = () => {
-    fetch('http://localhost:8080/api/save-data', {
+  const sendFirstData = async () => {
+    const response = await fetch('http://localhost:8080/api/save-data', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({data: input})
-    }).then(response => response.json())
-        .then(data => console.log('Data sent to backend: ', data))
+    })
+    const result = await response.json()
+    setResponseMessage(result.message)
+    setInput1("")
+  }
+
+  const fetchSecondData = async () => {
+    const response = await fetch('http://localhost:8080/api/get-data')
+    const result = await response.json()
+    setInput2(result.data)
   }
 
   return (
-    <div className="App">
-      <input type="text" value={input} onChange={(e) => setInput(e.target.value)}/>
-      <button onClick={handeSubmit}>Отправить</button>
-    </div>
+      <div className="App">
+        <input
+            type="text"
+            value={input1}
+            onChange={(e) => setInput1(e.target.value)}
+            placeholder='Введите данные для отправки'
+        />
+        <button onClick={sendFirstData}>Отправить</button>
+        <p>{responseMessage}</p>
+        <button onClick={fetchSecondData}>Отправить</button>
+        <input
+            type="text"
+            value={input2}
+            readOnly
+            placeholder='Получение данных'
+        />
+      </div>
   );
 }
 
