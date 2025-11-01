@@ -11,7 +11,7 @@ function App() {
     const response = await fetch('http://localhost:8080/api/save-data', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({data: input})
+      body: JSON.stringify({data: input1})
     })
     const result = await response.json()
     setResponseMessage(result.message)
@@ -34,7 +34,7 @@ function App() {
         />
         <button onClick={sendFirstData}>Отправить</button>
         <p>{responseMessage}</p>
-        <button onClick={fetchSecondData}>Отправить</button>
+        <button onClick={fetchSecondData}>Получить данные</button>
         <input
             type="text"
             value={input2}
